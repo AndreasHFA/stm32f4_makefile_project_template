@@ -60,12 +60,13 @@ TARGET  = 	$(OUTPUT_DIR)/$(PROJECT)
 # Source directories
 LINKERSCRIPT	= ./linkerscript/stm32_flash.ld
 
-APP_INC_DIR	=	-I./app/ \
-			-I./app/100_device \
-			-I./app/200_appl
+APP_INC_DIR	= 	-I./ \
+			-I./2_device/ \
+			-I./3_application \
+			-I./4_config
 
 # APPLICATION SPECIFIC
-SRC = ./app/main.c
+SRC = ./main.c
 # Further sources have to be specified with "+="
 #SRC += 
 
@@ -76,7 +77,8 @@ ASM_SRC =
 INCDIRS = $(APP_INC_DIR)
 
 # include submakefiles here
-include makefile_std_lib.mk # STM32 Standard Peripheral Library
+#include 1_peripheral/submakefile_std_lib.mk 	# STM32 Standard Peripheral Library
+include submakefile_std_lib.mk 			# STM32 Standard Peripheral Library
 
 
 INCDIR  = $(patsubst %,-I%, $(INCDIRS))
