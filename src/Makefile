@@ -35,6 +35,7 @@ CC   		= $(CCPREFIX)gcc
 CP   		= $(CCPREFIX)objcopy
 AS   		= $(CCPREFIX)gcc -x assembler-with-cpp
 GDBTUI		= $(CCPREFIX)gdbtui
+SZ		= $(CCPREFIX)size
 HEX  		= $(CP) -O ihex
 BIN  		= $(CP) -O binary -S
 MCU  		= cortex-m4
@@ -49,11 +50,19 @@ DDEFS =
 OPT = -Os
 
 # Define project name and Ram/Flash mode here
-PROJECT	= stm32f4_template
+PROJECT		= stm32f4_template
+
+# Define Output
+OUTPUT_DIR = output
+
+TARGET  = 	$(OUTPUT_DIR)/$(PROJECT)
 
 # Source directories
 LINKERSCRIPT	= ./linkerscript/stm32_flash.ld
-APP_INC_DIR	= ./app/inc
+
+APP_INC_DIR	=	-I./app/ \
+			-I./app/100_device \
+			-I./app/200_appl
 
 # APPLICATION SPECIFIC
 SRC = ./app/main.c
@@ -83,14 +92,17 @@ ASFLAGS = $(MCFLAGS) -g -gdwarf-2 -mthumb  -Wa,-amhls=$(<:.s=.lst)
 CPFLAGS = $(MCFLAGS) $(OPT) -g -gdwarf-2 -mthumb -fomit-frame-pointer -Wall -fverbose-asm -Wa,-ahlms=$(<:.c=.lst) $(DEFS)
 
 # "-Xlinker --gc-sections" - removes unused code from the output binary - saves memory
-LDFLAGS = $(MCFLAGS) -g -gdwarf-2 -mthumb -nostartfiles -Xlinker --gc-sections -T$(LINKERSCRIPT) -Wl,-Map=$(PROJECT).map,--cref,--no-warn-mismatch $(LIBDIR) $(LIB)
+LDFLAGS = $(MCFLAGS) -g -gdwarf-2 -mthumb -nostartfiles -Xlinker --gc-sections -T$(LINKERSCRIPT) -Wl,-Map=$(TARGET).map,--cref,--no-warn-mismatch $(LIBDIR) $(LIB)
 
 
 #
 # makefile rules
 # 
-all: $(OBJS) $(PROJECT).elf  $(PROJECT).hex $(PROJECT).bin
-	$(TRGT)size $(PROJECT).elf
+#all: $(OBJS) $(TARGET).elf  $(TARGET).hex $(TARGET).bin
+#	$(TRGT)size $(TARGET).elf
+
+all: $(OBJS) $(TARGET).elf  $(TARGET).hex $(TARGET).bin
+	$(SZ) $(TARGET).elf
  
 %o: %c
 	$(CC) -c $(CPFLAGS) -I . $(INCDIR) $< -o $@
@@ -108,12 +120,12 @@ all: $(OBJS) $(PROJECT).elf  $(PROJECT).hex $(PROJECT).bin
 	$(BIN)  $< $@
 
 	
-flash_openocd: $(PROJECT).bin
-	openocd -s ~/EmbeddedArm/openocd-bin/share/openocd/scripts/ -f interface/stlink-v2.cfg -f target/stm32f0x_stlink.cfg -c "init" -c "reset halt" -c "sleep 100" -c "wait_halt 2" -c "flash write_image erase $(PROJECT).bin 0x08000000" -c "sleep 100" -c "verify_image $(PROJECT).bin 0x08000000" -c "sleep 100" -c "reset run" -c shutdown
+flash_openocd: $(TARGET).bin
+	openocd -s ~/EmbeddedArm/openocd-bin/share/openocd/scripts/ -f interface/stlink-v2.cfg -f target/stm32f0x_stlink.cfg -c "init" -c "reset halt" -c "sleep 100" -c "wait_halt 2" -c "flash write_image erase $(TARGET).bin 0x08000000" -c "sleep 100" -c "verify_image $(TARGET).bin 0x08000000" -c "sleep 100" -c "reset run" -c shutdown
 
 
-flash_stlink: $(PROJECT).bin
-	$(ST_TOOL)/st-flash write $(PROJECT).bin 0x8000000
+flash_stlink: $(TARGET).bin
+	$(ST_TOOL)/st-flash write $(TARGET).bin 0x8000000
 
 
 erase_openocd:
@@ -124,22 +136,22 @@ erase_stlink:
 	$(ST_TOOL)/st-flash erase
 
 
-debug_openocd: $(PROJECT).elf flash_openocd
+debug_openocd: $(TARGET).elf flash_openocd
 	xterm -e openocd -s ~/EmbeddedArm/openocd-bin/share/openocd/scripts/ -f interface/stlink-v2.cfg -f target/stm32f0x_stlink.cfg -c "init" -c "halt" -c "reset halt" &
-	$(GDBTUI) --eval-command="target remote localhost:3333" $(PROJECT).elf 
+	$(GDBTUI) --eval-command="target remote localhost:3333" $(TARGET).elf 
 
 
-debug_stlink: $(PROJECT).elf
+debug_stlink: $(TARGET).elf
 	xterm -e st-util &
-	$(GDBTUI) --eval-command="target remote localhost:4242"  $(PROJECT).elf -ex 'load'
+	$(GDBTUI) --eval-command="target remote localhost:4242"  $(TARGET).elf -ex 'load'
 
 		
 clean:
 	-rm -rf $(OBJS)
-	-rm -rf $(PROJECT).elf
-	-rm -rf $(PROJECT).map
-	-rm -rf $(PROJECT).hex
-	-rm -rf $(PROJECT).bin
+	-rm -rf $(TARGET).elf
+	-rm -rf $(TARGET).map
+	-rm -rf $(TARGET).hex
+	-rm -rf $(TARGET).bin
 	-rm -rf $(SRC:.c=.lst)
 	-rm -rf $(ASRC:.s=.lst)
 # *** EOF ***
