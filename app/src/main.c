@@ -27,18 +27,18 @@ int main()
   while(1)
   {
     GPIO_SetBits(GPIOD, GPIO_Pin_12);    
-    Delay(0x3FFFFF);
-    
+    Delay(0x03FFFF);
+   
     GPIO_SetBits(GPIOD, GPIO_Pin_13);  
-    Delay(0x3FFFFF);
+    Delay(0x03FFFF);
 
     GPIO_SetBits(GPIOD, GPIO_Pin_14);    
-    Delay(0x3FFFFF);
-
+    Delay(0x03FFFF);
+ 
     GPIO_SetBits(GPIOD, GPIO_Pin_15);
-    Delay(0x3FFFFF);
+    Delay(0x03FFFF);
         
     GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
-    Delay(0xFFFFFF);
+    Delay(0x3FFFFF);
   }
 }
