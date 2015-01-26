@@ -35,7 +35,7 @@ CC   		= $(CCPREFIX)gcc
 CP   		= $(CCPREFIX)objcopy
 AS   		= $(CCPREFIX)gcc -x assembler-with-cpp
 GDBTUI		= $(CCPREFIX)gdbtui
-SZ		= $(CCPREFIX)size
+SZ			= $(CCPREFIX)size
 HEX  		= $(CP) -O ihex
 BIN  		= $(CP) -O binary -S
 MCU  		= cortex-m4
@@ -52,7 +52,7 @@ OPT = -Os
 # Define project name and Ram/Flash mode here
 PROJECT		= stm32f4_template
 
-# Define Output
+# Define output directory
 OUTPUT_DIR = output
 
 TARGET  = 	$(OUTPUT_DIR)/$(PROJECT)
@@ -61,9 +61,10 @@ TARGET  = 	$(OUTPUT_DIR)/$(PROJECT)
 LINKERSCRIPT	= ./linkerscript/stm32_flash.ld
 
 APP_INC_DIR	= 	. \
-			./2_device \
-			./3_application \
-			./4_config
+				./1_peripheral \
+				./2_device \
+				./3_application \
+				./4_config
 
 # APPLICATION SPECIFIC
 SRC = ./main.c
@@ -71,6 +72,7 @@ SRC = ./main.c
 #SRC += 
 SRC += ./2_device/stm32_configuration.c
 SRC += ./2_device/stm32_serial_functions.c
+
 
 ASM_SRC = 
 # Further sources have to be specified with "+="

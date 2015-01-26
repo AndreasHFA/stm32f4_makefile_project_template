@@ -17,18 +17,18 @@ void USART_send(USART_TypeDef *usartNr, const char *msgPtr)
 	}
 }
 
-
+/*
 void USART_sendSuspend(USART_TypeDef *usartNr, const char *msgPtr, xTaskHandle taskHandle)
 {
 	while(*msgPtr)
 	{
-		/* Enable Interrupt for USART TX. USART2 MUST NOT be used by another function or task!!!*/
+		// Enable Interrupt for USART TX. USART2 MUST NOT be used by another function or task!!!
 		USART_ITConfig(usartNr, USART_IT_TC, ENABLE);
 		USART_SendData(usartNr, *msgPtr++);
 		vTaskSuspend( taskHandle );
 	}
 }
-
+*/
 
 void USART_printf(USART_TypeDef *usartNr, char *buff,...)
 {

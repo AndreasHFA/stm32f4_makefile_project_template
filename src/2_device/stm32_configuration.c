@@ -1,5 +1,8 @@
+
+
 #include <stm32_configuration.h>
 #include <stm32f4xx_conf.h>
+
 
 #define ADCx_DR_ADDRESS          ((uint32_t)0x4001224C)
 
@@ -7,14 +10,6 @@ USART_InitTypeDef USART_InitStructure;
 ErrorStatus HSEStartUpStatus;
 GPIO_InitTypeDef  GPIO_InitStructure;
 
-void CLI_Configuration(void){
-
-	FreeRTOS_CLIRegisterCommand( &xHelloCLI );
-	FreeRTOS_CLIRegisterCommand( &xSimpleParamCLI );
-	FreeRTOS_CLIRegisterCommand( &xStoreInFlash );
-	FreeRTOS_CLIRegisterCommand( &xgetFromFlash );
-
-}
 
 void RCC_Configuration(void){
 
