@@ -22,46 +22,83 @@
 #include <stm32f4xx.h>
 #include <stm32f4xx_conf.h>
 
+#include <stm32_configuration.h>
 
 
-void Delay(__IO uint32_t nCount)
-{
-  while(nCount--)
-  {
-  }
-}
 
-int main()
-{
+/*
+ *  STM4F407 Discoveryboard LED Pins
+ *  LED Green 	->	PD12
+ *  LED Orange	->	PD13
+ *  LED Red		-> 	PD14
+ *  LED Blue	->	PD15
+ */
 
+
+uint8_t SPIRxBuffer[] = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA};
+//FIXME: Don't know why the TX buffersize has to 9 here? The DMA does not send the
+//		 first byte. It begins with the second one. Maybe something is not correctly setup,
+//		 or maybe I have to look in the errata sheet of the STM32F4.
+uint8_t SPITxBuffer[] = {0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x40, 0x41};
+
+/*
   GPIO_InitTypeDef  GPIO_InitStructure;
-
+*/
   /* GPIOD Periph clock enable */
+/*
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+*/
 
   /* Configure PD12, PD13, PD14 and PD15 in output pushpull mode */
+/*
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOD, &GPIO_InitStructure);
+*/
 
-  while(1)
+void Delay(__IO uint32_t nCount);
+
+int main()
+{
+
+	RCC_Configuration();
+	/*
+	NVIC_Configuration();
+	GPIO_Configuration();
+	USART_Configuration();
+	CLI_Configuration();
+*/
+	//stepgen_reset();
+
+//	SPI_Configuration(SPIRxBuffer, SPITxBuffer, sizeof(SPIRxBuffer));
+
+
+	while(1)
+	{
+		GPIO_SetBits(GPIOD, GPIO_Pin_12);
+		Delay(0x03FFFF);
+
+		GPIO_SetBits(GPIOD, GPIO_Pin_13);
+		Delay(0x03FFFF);
+
+		GPIO_SetBits(GPIOD, GPIO_Pin_14);
+		Delay(0x03FFFF);
+
+		GPIO_SetBits(GPIOD, GPIO_Pin_15);
+		Delay(0x03FFFF);
+
+		GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
+		Delay(0x3FFFFF);
+	}
+}
+
+
+void Delay(__IO uint32_t nCount)
+{
+  while(nCount--)
   {
-    GPIO_SetBits(GPIOD, GPIO_Pin_12);    
-    Delay(0x03FFFF);
-   
-    GPIO_SetBits(GPIOD, GPIO_Pin_13);  
-    Delay(0x03FFFF);
-
-    GPIO_SetBits(GPIOD, GPIO_Pin_14);    
-    Delay(0x03FFFF);
- 
-    GPIO_SetBits(GPIOD, GPIO_Pin_15);
-    Delay(0x03FFFF);
-        
-    GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
-    Delay(0x3FFFFF);
   }
 }

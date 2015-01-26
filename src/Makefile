@@ -60,15 +60,17 @@ TARGET  = 	$(OUTPUT_DIR)/$(PROJECT)
 # Source directories
 LINKERSCRIPT	= ./linkerscript/stm32_flash.ld
 
-APP_INC_DIR	= 	-I./ \
-			-I./2_device/ \
-			-I./3_application \
-			-I./4_config
+APP_INC_DIR	= 	. \
+			./2_device \
+			./3_application \
+			./4_config
 
 # APPLICATION SPECIFIC
 SRC = ./main.c
 # Further sources have to be specified with "+="
 #SRC += 
+SRC += ./2_device/stm32_configuration.c
+SRC += ./2_device/stm32_serial_functions.c
 
 ASM_SRC = 
 # Further sources have to be specified with "+="
