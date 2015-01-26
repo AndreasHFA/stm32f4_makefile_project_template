@@ -21,7 +21,7 @@
 
 #include <stm32f4xx.h>
 #include <stm32f4xx_conf.h>
-//#include <stm32_configuration.h>
+#include <stm32_configuration.h>
 //#include <stm32_serial_functions.h>
 
 

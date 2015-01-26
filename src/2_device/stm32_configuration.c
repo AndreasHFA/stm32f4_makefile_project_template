@@ -491,9 +491,9 @@ void CAN_Configuration(void)
   //second filter-id in 16-Bit Mode, seems to be independent of the first (high) one.
   CAN_FilterInitStructure.CAN_FilterIdLow = 0;
   //filter-mask for the first (filter-id high) in 16-Bit Mode, seems to be independent of the second mask.
-  CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0xFE0 << 5;
+  CAN_FilterInitStructure.CAN_FilterMaskIdHigh = (uint16_t) (0xFE0 << 5);
   //filter-mask for the second (filter-id low) in 16-Bit Mode, seems to be independent of the first mask.
-  CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0xFFF << 5;
+  CAN_FilterInitStructure.CAN_FilterMaskIdLow = (uint16_t) (0xFFF << 5);
   CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_FIFO0;
   CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
   CAN_FilterInit(&CAN_FilterInitStructure);
