@@ -3,6 +3,15 @@
 
 #include <stm32f4xx.h>
 
+
+
+/* Toggle LED */
+#define TOGGLE_LED_GREEN() GPIOD->ODR ^= GPIO_Pin_12;
+#define TOGGLE_LED_ORANGE() GPIOD->ODR ^= GPIO_Pin_13;
+#define TOGGLE_LED_RED() GPIOD->ODR ^= GPIO_Pin_14;
+#define TOGGLE_LED_BLUE() GPIOD->ODR ^= GPIO_Pin_15;
+
+
 #define ssc32_baudrate 38400
 
 #define CLOCK_SPEED 100000

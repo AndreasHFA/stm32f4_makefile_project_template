@@ -70,8 +70,10 @@ APP_INC_DIR	= 	. \
 SRC = ./main.c
 # Further sources have to be specified with "+="
 #SRC += 
+SRC += ./1_peripheral/stm32f4xx_it.c
 SRC += ./2_device/stm32_configuration.c
-#SRC += ./2_device/stm32_serial_functions.c
+SRC += ./2_device/stm32_serial_functions.c
+
 
 
 ASM_SRC = 

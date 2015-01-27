@@ -19,7 +19,12 @@
 						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.276759709" name="No ToolChain" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.276759709.742622242" name=""/>
 							<builder buildPath="/home/andreas/Documents/STM32/projects/stm32f4_makefile_project_template/src" command="make" id="org.eclipse.cdt.build.core.settings.default.builder.1335832724" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1907628263" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1907628263" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs">
+								<option id="org.eclipse.cdt.build.core.settings.holder.libpaths.771581954" name="Library Paths" superClass="org.eclipse.cdt.build.core.settings.holder.libpaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ExtStepgen/src/1_peripheral/STM32F4xx_StdPeriph_Driver/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ExtStepgen/src/1_peripheral/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
+								</option>
+							</tool>
 						</toolChain>
 					</folderInfo>
 				</configuration>

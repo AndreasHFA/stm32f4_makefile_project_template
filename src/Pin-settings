@@ -1,0 +1,15 @@
+MCU Mitschrift
+
+STM32F407 DiscoveryBoard
+
+Used SPI 2
+SPI_NSS -> PB12			/* Important Pin SPI Slave */
+CLK		-> PB13
+MISO	-> PB14
+MOSI	-> PB15
+
+DMA1 Channel 4 (spi rx)
+DMA1 Channel 3 (spi tx)
+
+
+

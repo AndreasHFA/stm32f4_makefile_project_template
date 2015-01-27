@@ -4,6 +4,7 @@
 #include <stm32f4xx_conf.h>
 
 
+
 #define ADCx_DR_ADDRESS          ((uint32_t)0x4001224C)
 
 USART_InitTypeDef USART_InitStructure;
@@ -323,11 +324,11 @@ void SPI_Configuration(uint8_t *pRXDMABuffer, uint8_t *pTXDMABuffer, uint8_t buf
 	DMA_InitTypeDef DMA_InitStructure;
 	SPI_InitTypeDef  SPI_InitStructure;
 
-	DMA_DeInit(DMA1_Stream3);
-	DMA_Cmd(DMA1_Stream3, DISABLE);
+	DMA_DeInit(DMA1_Stream4);
+	DMA_Cmd(DMA1_Stream4, DISABLE);
 
 	/* Configure DMA Stream */
-	DMA_InitStructure.DMA_Channel = DMA_Channel_0;
+	DMA_InitStructure.DMA_Channel = DMA_Channel_4;
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
 	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)pRXDMABuffer;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;
@@ -342,17 +343,17 @@ void SPI_Configuration(uint8_t *pRXDMABuffer, uint8_t *pTXDMABuffer, uint8_t buf
 	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
 	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
 	DMA_InitStructure.DMA_PeripheralBurst = DMA_MemoryBurst_Single;
-	DMA_Init(DMA1_Stream3, &DMA_InitStructure);
+	DMA_Init(DMA1_Stream4, &DMA_InitStructure);
 
-	//DMA_ITConfig(DMA1_Stream3, DMA_IT_TC, ENABLE);
-	DMA_Cmd(DMA1_Stream3, ENABLE);
+	/* DMA_ITConfig(DMA1_Stream4, DMA_IT_TC, ENABLE); */
+	DMA_Cmd(DMA1_Stream4, ENABLE);
 
 
-	DMA_DeInit(DMA1_Stream4);
-	DMA_Cmd(DMA1_Stream4, DISABLE);
+	DMA_DeInit(DMA1_Stream3);
+	DMA_Cmd(DMA1_Stream3, DISABLE);
 
 	/* Configure DMA Stream */
-	DMA_InitStructure.DMA_Channel = DMA_Channel_0;
+	DMA_InitStructure.DMA_Channel = DMA_Channel_3;
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
 	DMA_InitStructure.DMA_Memory0BaseAddr = (uint32_t)pTXDMABuffer;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;
@@ -367,11 +368,10 @@ void SPI_Configuration(uint8_t *pRXDMABuffer, uint8_t *pTXDMABuffer, uint8_t buf
 	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
 	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;
 	DMA_InitStructure.DMA_PeripheralBurst = DMA_MemoryBurst_Single;
-	DMA_Init(DMA1_Stream4, &DMA_InitStructure);
+	DMA_Init(DMA1_Stream3, &DMA_InitStructure);
 
 	DMA_ITConfig(DMA1_Stream3, DMA_IT_TC, ENABLE);
-	//DMA_ITConfig(DMA1_Stream4, DMA_IT_TC, ENABLE);
-	DMA_Cmd(DMA1_Stream4, ENABLE);
+	DMA_Cmd(DMA1_Stream3, ENABLE);
 
 	SPI_I2S_DeInit(SPI2);
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Slave;
@@ -389,11 +389,13 @@ void SPI_Configuration(uint8_t *pRXDMABuffer, uint8_t *pTXDMABuffer, uint8_t buf
 
 	SPI_Init(SPI2, &SPI_InitStructure);
 
+	/* Enable the SPI peripheral */
+	SPI_Cmd(SPI2, ENABLE);
+
 	SPI_I2S_DMACmd(SPI2, SPI_I2S_DMAReq_Rx, ENABLE);
 	SPI_I2S_DMACmd(SPI2, SPI_I2S_DMAReq_Tx, ENABLE);
 
-	/* Enable the SPI peripheral */
-	SPI_Cmd(SPI2, ENABLE);
+
 }
 
 

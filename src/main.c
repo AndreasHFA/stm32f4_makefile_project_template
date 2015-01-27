@@ -34,6 +34,8 @@
  */
 
 
+
+
 uint8_t SPIRxBuffer[] = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA};
 //FIXME: Don't know why the TX buffersize has to 9 here? The DMA does not send the
 //		 first byte. It begins with the second one. Maybe something is not correctly setup,
@@ -64,33 +66,34 @@ int main()
 {
 
 	RCC_Configuration();
-	/*
 	NVIC_Configuration();
 	GPIO_Configuration();
 	USART_Configuration();
-	CLI_Configuration();
-*/
+	/* CLI_Configuration(); */
+	SPI_Configuration(SPIRxBuffer, SPITxBuffer, sizeof(SPIRxBuffer));
+
 	//stepgen_reset();
 
-//	SPI_Configuration(SPIRxBuffer, SPITxBuffer, sizeof(SPIRxBuffer));
+
 
 
 	while(1)
 	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_12);
-		Delay(0x03FFFF);
+		//GPIO_SetBits(GPIOD, GPIO_Pin_13);
+		TOGGLE_LED_GREEN();
+		Delay(0xFFFFF);
 
-		GPIO_SetBits(GPIOD, GPIO_Pin_13);
-		Delay(0x03FFFF);
+		//GPIO_SetBits(GPIOD, GPIO_Pin_14);
+		TOGGLE_LED_ORANGE();
+		Delay(0xFFFFF);
 
-		GPIO_SetBits(GPIOD, GPIO_Pin_14);
-		Delay(0x03FFFF);
+		//GPIO_SetBits(GPIOD, GPIO_Pin_15);
+		//TOGGLE_LED_RED();
+		Delay(0xFFFFF);
 
-		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		Delay(0x03FFFF);
-
-		GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
-		Delay(0x3FFFFF);
+		//GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
+		TOGGLE_LED_BLUE();
+		Delay(0xFFFFF);
 	}
 }
 
